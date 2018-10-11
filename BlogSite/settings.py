@@ -23,9 +23,9 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'blog/templates/blog')
 SECRET_KEY = 'x0qek_u=dlgpzjrrp2jw+=zdxyo9p(x(e6!m&2qahw+%$u4=@&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition

@@ -2,14 +2,22 @@
 {% block content%}
   <div class="centerstage">
     {% for post in post_list %}
-    <div class="post">
-      <h1>
-        <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
-      </h1>
-      <div class="date">
-        <p>Published on: {{post.published|date:"D M Y"}}</p>
+    <div class="post jumbotron">
+      <h2>
+        <a class="techfont" href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
+      </h2>
+      <div>
+        {% if post.published_date %}
+        <p class="commentposter" style="font-size:100%">Published on: <strong>{{post.published_date|date:"d.m.Y, G:i"}}</strong></p>
+        {% else %}
+        <p class="commentposter" style="font-size:100%">Created: <strong>{{post.created_date|date:"d.m.Y, G:i"}}<strong></p>
       </div>
-      <a href="{% url 'post_detail' pk=post.pk %}">Comments: {{ post.approve_comments.count }}</a>
+      {% endif %}
+      <a class="commentposter" href="{% url 'post_detail' pk=post.pk %}">Comments: <strong>{{ post.approve_comments.count }}</strong></a>
+    </div>
+    {% empty %}
+    <div class="jumbotron">
+      <p class="techfont">Nothing to see here</p> 
     </div>
     {% endfor %}
   </div>

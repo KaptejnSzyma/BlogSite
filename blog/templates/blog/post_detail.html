@@ -1,9 +1,9 @@
 {% extends "blog/base.html" %}
 {% block content%}
-  <h1 class="posttitle loader">{{post.title}}</h1>
+  <h1 class="posttitle">{{post.title}}</h1>
   {% if post.published_date %}
-    <div class="date postdate">
-      {{ post.published_date }}
+    <div class="date postdate commentposter">
+      {{ post.published_date|date:"d.m.Y, G:i" }}
     </div>
   {% else %}
     <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
@@ -11,34 +11,33 @@
     <p class="postcontent">{{ post.text|safe|linebreaksbr}}</p>
 
   {% if user.is_authenticated %}
-    <a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}">
+    <a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}" title="Edit">
       <span class='glyphicon glyphicon-pencil'></span>
     </a>
-    <a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}">
+    <a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}" title="Delete">
       <span class='glyphicon glyphicon-remove'></span>
     </a>
   {% endif %}
   <hr>
-  <a class="btn btn-primary btn-comment" href="{% url 'add_comment_to_post' pk=post.pk %}">Add Comment</a>
-
+  <h3 class="postcontent">Comments </h3>
   <div class="container">
     {% for comment in post.comments.all %}
       <br>
       {% if user.is_authenticated or comment.approved_comment%}
-        {{comment.created_date}}
         {% if not comment.approved_comment %}
-          <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk%}">
+          <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk%}" title="Remove">
             <span class='glyphicon glyphicon-remove'></span>
           </a>
-          <a class="btn btn-primary" href="{% url 'comment_approve' pk=comment.pk%}">
+          <a class="btn btn-primary" href="{% url 'comment_approve' pk=comment.pk%}" title="Approve">
             <span class='glyphicon glyphicon-ok'></span>
           </a>
         {% endif %}
         <p>{{comment.text|safe|linebreaks}}</p>
-        <p>Posted by: {{comment.author}}</p>
+        <p class="commentposter">Posted by: <strong>{{comment.author}}</strong> on <strong>{{comment.created_date|date:"d.m.Y, G:i"}}<strong></p>
       {% endif %}
       {% empty %}
       <p>No comments</p>
     {% endfor %}
   </div>
+  <a class="btn btn-primary btn-comment" href="{% url 'add_comment_to_post' pk=post.pk %}">Add Comment</a>
 {%endblock%}
